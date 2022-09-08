@@ -1,4 +1,5 @@
 from math import prod
+from statistics import mean
 
 """
 Array class for assignment 2
@@ -92,7 +93,12 @@ class Array:
             Array: the sum as a new array.
 
         """
-        if not isinstance(other, (Array, int, float)) or (isinstance(other, Array) and other.shape != self.shape):
+        if (
+            not isinstance(other, (Array, int, float))
+            or (isinstance(other, Array) and other.shape != self.shape)
+            or isinstance(self.flat_arr[0], bool)
+            or (isinstance(other, Array) and isinstance(other.flat_arr[0], bool))
+        ):
             return NotImplemented
 
         if isinstance(other, Array):
@@ -127,7 +133,17 @@ class Array:
             Array: the difference as a new array.
 
         """
-        pass
+        if (
+            not isinstance(other, (Array, int, float))
+            or (isinstance(other, Array) and other.shape != self.shape)
+            or isinstance(self.flat_arr[0], bool)
+            or (isinstance(other, Array) and isinstance(other.flat_arr[0], bool))
+        ):
+            return NotImplemented
+
+        if isinstance(other, Array):
+            return Array(self.shape, *[l - r for l, r in zip(self.flat_arr, other.flat_arr)])
+        return Array(self.shape, *[val - other for val in self.flat_arr])
 
     def __rsub__(self, other):
         """Element-wise subtracts this Array from a number or Array.
@@ -142,7 +158,17 @@ class Array:
             Array: the difference as a new array.
 
         """
-        pass
+        if (
+            not isinstance(other, (Array, int, float))
+            or (isinstance(other, Array) and other.shape != self.shape)
+            or isinstance(self.flat_arr[0], bool)
+            or (isinstance(other, Array) and isinstance(other.flat_arr[0], bool))
+        ):
+            return NotImplemented
+
+        if isinstance(other, Array):
+            return Array(self.shape, *[r - l for l, r in zip(self.flat_arr, other.flat_arr)])
+        return Array(self.shape, *[other - val for val in self.flat_arr])
 
     def __mul__(self, other):
         """Element-wise multiplies this Array with a number or array.
@@ -157,7 +183,17 @@ class Array:
             Array: a new array with every element multiplied with `other`.
 
         """
-        pass
+        if (
+            not isinstance(other, (Array, int, float))
+            or (isinstance(other, Array) and other.shape != self.shape)
+            or isinstance(self.flat_arr[0], bool)
+            or (isinstance(other, Array) and isinstance(other.flat_arr[0], bool))
+        ):
+            return NotImplemented
+
+        if isinstance(other, Array):
+            return Array(self.shape, *[l * r for l, r in zip(self.flat_arr, other.flat_arr)])
+        return Array(self.shape, *[val * other for val in self.flat_arr])
 
     def __rmul__(self, other):
         """Element-wise multiplies this Array with a number or array.
@@ -172,7 +208,7 @@ class Array:
             Array: a new array with every element multiplied with `other`.
 
         """
-        # Hint: this solution/logic applies for all r-methods
+        # Hint: this solution/logic applies for all r-methods   ... but not rsub though right?
         return self.__mul__(other)
 
     def __eq__(self, other):
@@ -188,7 +224,12 @@ class Array:
             bool: True if the two arrays are equal (identical). False otherwise.
 
         """
-        pass
+        if not self.shape == other.shape:
+            return False
+        elif not isinstance(other, Array):
+            return False
+        else:
+            return self.flat_arr == other.flat_arr
 
     def is_equal(self, other):
         """Compares an Array element-wise with another Array or number.
@@ -208,8 +249,16 @@ class Array:
             ValueError: if the shape of self and other are not equal.
 
         """
+        if isinstance(other, Array):
+            if self.shape != other.shape:
+                raise ValueError("The shapes of the compared arrays are not equal")
+            else:
+                return Array(self.shape, *[a == b for a, b in zip(self.flat_arr, other.flat_arr)])
 
-        pass
+        elif not isinstance(other, (int, float, bool)):
+            raise TypeError("Invalid type of 'other'")
+
+        return Array(self.shape, *[a == other for a in self.flat_arr])
 
     def min_element(self):
         """Returns the smallest value of the array.
@@ -221,7 +270,9 @@ class Array:
 
         """
 
-        pass
+        if isinstance(self.flat_arr[0], bool):
+            raise TypeError("Cannot find minimum of boolean array")
+        return float(min(self.flat_arr))
 
     def mean_element(self):
         """Returns the mean value of an array
@@ -232,4 +283,6 @@ class Array:
             float: the mean value
         """
 
-        pass
+        if isinstance(self.flat_arr[0], bool):
+            raise TypeError("Cannot find minimum of boolean array")
+        return mean(self.flat_arr)
