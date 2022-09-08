@@ -1,9 +1,11 @@
+from math import prod
+
 """
 Array class for assignment 2
 """
 
-class Array:
 
+class Array:
     def __init__(self, shape, *values):
         """Initialize an array of 1-dimensionality. Elements can only be of type:
 
@@ -26,12 +28,47 @@ class Array:
         """
 
         # Check if the values are of valid types
+        if not isinstance(shape, tuple) and not all([type(x) in [int, bool, float] for x in values]):
+            raise TypeError("Invalid type for shape or values")
+
+        if not len(set([type(x) for x in values])) == 1:
+            raise ValueError("Given values are not all of the same type")
 
         # Check that the amount of values corresponds to the shape
+        if not prod(shape) == len(values):
+            raise ValueError("The amount of values given does not correspond to the shape")
 
         # Set instance attributes
+        self.flat_arr = self.array = list(values)
+        self.shape = shape
 
-        pass
+        # For each dimension, subdivide into lists containing dim slices of the previous list
+        # If len(shape) == 1 this for loop will simply be skipped.
+        # Strictly not asked by the exercise, but this allows n dimensions
+        for i in range(len(shape) - 1, 0, -1):
+            dim = shape[i]
+            self.array = [self.array[i : i + dim] for i in range(0, len(self.array), dim)]
+
+    def __getitem__(self, key):
+        """Returns the value of array at index key.
+
+        Enables indexing of Array
+
+        Args:
+            key (int): The index key of the array for the item to be returned
+
+        Raises:
+            TypeError: If key is wrong type or contains wrong types
+
+        Returns:
+            Union(List, Union(int, float, bool)): Returns either a sublist or the number itself(if inner dimension is
+            reached)
+        """
+
+        if not isinstance(key, int) or (isinstance(key, tuple) and not all([type(x) == int for x in key])):
+            raise TypeError("Index should be integer or tuple of integers")
+
+        return self.array[key]
 
     def __str__(self):
         """Returns a nicely printable string representation of the array.
@@ -40,7 +77,7 @@ class Array:
             str: A string representation of the array.
 
         """
-        pass
+        return str(self.array)
 
     def __add__(self, other):
         """Element-wise adds Array with another Array or number.
@@ -55,11 +92,12 @@ class Array:
             Array: the sum as a new array.
 
         """
+        if not isinstance(other, (Array, int, float)) or (isinstance(other, Array) and other.shape != self.shape):
+            return NotImplemented
 
-        # check that the method supports the given arguments (check for data type and shape of array)
-        # if the array is a boolean you should return NotImplemented
-
-        pass
+        if isinstance(other, Array):
+            return Array(self.shape, *[sum(vals) for vals in zip(self.flat_arr, other.flat_arr)])
+        return Array(self.shape, *[val + other for val in self.flat_arr])
 
     def __radd__(self, other):
         """Element-wise adds Array with another Array or number.
@@ -74,7 +112,7 @@ class Array:
             Array: the sum as a new array.
 
         """
-        pass
+        return self.__add__(other)
 
     def __sub__(self, other):
         """Element-wise subtracts an Array or number from this Array.
