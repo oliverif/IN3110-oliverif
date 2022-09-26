@@ -45,7 +45,7 @@ class Array:
 
         # For each dimension, subdivide into lists containing dim slices of the previous list
         # If len(shape) == 1 this for loop will simply be skipped.
-        # Strictly not asked by the exercise, but this allows n dimensions
+        # This allows n dimensional arrays
         for i in range(len(shape) - 1, 0, -1):
             dim = shape[i]
             self.array = [self.array[i : i + dim] for i in range(0, len(self.array), dim)]
@@ -58,12 +58,12 @@ class Array:
         Args:
             key (int): The index key of the array for the item to be returned
 
-        Raises:
-            TypeError: If key is wrong type or contains wrong types
-
         Returns:
             Union(List, Union(int, float, bool)): Returns either a sublist or the number itself(if inner dimension is
             reached)
+
+        Raises:
+            TypeError: If key is wrong type or contains wrong types
         """
 
         if not isinstance(key, int) or (isinstance(key, tuple) and not all([type(x) == int for x in key])):
@@ -94,10 +94,10 @@ class Array:
 
         """
         if (
-            not isinstance(other, (Array, int, float))
-            or (isinstance(other, Array) and other.shape != self.shape)
-            or isinstance(self.flat_arr[0], bool)
-            or (isinstance(other, Array) and isinstance(other.flat_arr[0], bool))
+            not isinstance(other, (Array, int, float))  # wrong type
+            or (isinstance(other, Array) and other.shape != self.shape)  # array but non-equal shape
+            or isinstance(self.flat_arr[0], bool)  # self is bool type Array
+            or (isinstance(other, Array) and isinstance(other.flat_arr[0], bool))  # other is bool type Array
         ):
             return NotImplemented
 
@@ -224,9 +224,9 @@ class Array:
             bool: True if the two arrays are equal (identical). False otherwise.
 
         """
-        if not self.shape == other.shape:
+        if not isinstance(other, Array):
             return False
-        elif not isinstance(other, Array):
+        elif not self.shape == other.shape:
             return False
         else:
             return self.flat_arr == other.flat_arr
@@ -286,3 +286,11 @@ class Array:
         if isinstance(self.flat_arr[0], bool):
             raise TypeError("Cannot find minimum of boolean array")
         return mean(self.flat_arr)
+
+
+if __name__ == "__main__":
+    arr1 = Array((4,), 1, 2, 3, 4)
+    print(f"Array 1 = {arr1}\n")
+    arr2 = Array((4,), 5, 6, 7, 8)
+    print(f"Array 1 = {arr2}\n")
+    print(f"Array 1 + Array 2 = {arr1+arr2}")
