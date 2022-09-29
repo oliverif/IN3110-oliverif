@@ -2,8 +2,8 @@
 requires = [
     "setuptools",
     # 4110 only:
-    # "cython",
-    # "numpy==1.21.*",
+    "cython",
+    "numpy==1.21.*",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -14,7 +14,7 @@ requires-python = ">=3.7"
 license = {text = "MIT License"}
 description = "Package containing filters implemented using various methods."
 readme = "README.md"
-dependencies = ["numpy", "numba", "pillow", "line-profiler"]
+dependencies = ["numpy", "numba", "pillow", "line-profiler","cython"]
 
 [project.scripts]
 # instapy = "..."

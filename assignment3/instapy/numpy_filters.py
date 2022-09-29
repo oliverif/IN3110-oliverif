@@ -3,7 +3,7 @@
 from typing import Optional
 import numpy as np
 
-PIXEL_WEIGHTS = np.asarray([0.21, 0.72, 0.07])
+COLOR_WEIGHTS = np.asarray([0.21, 0.72, 0.07])
 
 
 def numpy_color2gray(image: np.array) -> np.array:
@@ -17,17 +17,12 @@ def numpy_color2gray(image: np.array) -> np.array:
 
     gray_image = np.empty_like(image)
 
-    # This one is a lot faster, but I assume np.sum use cython or something under the hood, so it defeats the purpose of
-    # this exercise.
-    # gray_image[:, :][:] = np.sum(image * PIXEL_WEIGHTS, axis=2, keepdims=True, dtype=np.uint8)
-
-    # iterate through the pixels, and apply the grayscale transform
-    for i in range(len(image)):
-        for j in range(len(image[i])):
-            gray_image[i, j, :] = sum(image[i, j][:] * PIXEL_WEIGHTS)
-
-    # Return image (make sure it's the right type!)
-    return gray_image
+    # Multiply color weights with image allows vectorized multiplication.
+    # Summing along axis 2 and assingning directly to the axis 2 of gray image.
+    gray_image[:, :, 0] = gray_image[:, :, 1] = gray_image[:, :, 2] = (
+        image[:, :, 0] * 0.21000 + image[:, :, 1] * 0.72000 + image[:, :, 2] * 0.07000
+    )
+    return gray_image.astype("uint8")
 
 
 def numpy_color2sepia(image: np.array, k: Optional[float] = 1) -> np.array:

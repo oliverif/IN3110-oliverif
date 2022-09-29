@@ -12,16 +12,18 @@ def numba_color2gray(image: np.array) -> np.array:
     Returns:
         np.array: gray_image
     """
-    PIXEL_WEIGHTS = [0.21, 0.72, 0.07]
+    COLOR_WEIGHTS = [0.21, 0.72, 0.07]
     gray_image = np.empty_like(image)
-    # iterate through the pixels, and apply the grayscale transform
+    """# iterate through the pixels, and apply the grayscale transform
     for i in range(len(image)):
         for j in range(len(image[i])):
-            gray_image[i, j, :] = sum(image[i, j][:] * PIXEL_WEIGHTS)
-            """gray_val = sum([p * w for p, w in zip(image[i, j], PIXEL_WEIGHTS)])
+            gray_val = sum([p * w for p, w in zip(image[i, j], COLOR_WEIGHTS)])
             for c in range(len(gray_image[i, j])):
                 gray_image[i, j][c] = gray_val"""
     # Return image (make sure it's the right type!)
+    gray_image[:, :, 0] = gray_image[:, :, 1] = gray_image[:, :, 2] = (
+        image[:, :, 0] * 0.21000 + image[:, :, 1] * 0.72000 + image[:, :, 2] * 0.07000
+    )
     return gray_image
 
 
