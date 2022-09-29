@@ -32,11 +32,22 @@ def python_color2sepia(image: np.array) -> np.array:
     Returns:
         np.array: sepia_image
     """
-    sepia_image = np.empty_like(image)
+    sepia_image = np.empty_like(image, dtype="double")
     # Iterate through the pixels
     # applying the sepia matrix
+    sepia_matrix = np.asarray(
+        [
+            [0.393, 0.769, 0.189],
+            [0.349, 0.686, 0.168],
+            [0.272, 0.534, 0.131],
+        ],
+        dtype="double",
+    )
 
-    ...
+    for i in range(len(image)):
+        for j in range(len(image[i])):
+            for n in range(3):
+                sepia_image[i, j, n] = min(255, sum([p * s for p, s in zip(sepia_matrix[n], image[i, j])]))
 
     # Return image
     # don't forget to make sure it's the right type!

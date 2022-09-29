@@ -30,6 +30,9 @@ if use_cython:
         "binding": True,
         "profile": True,
         "linetrace": True,
+        "boundscheck": False,
+        "wraparound": False,
+        "initializedcheck": False
         # you may want to add some compiler directives here
         # to optimize compilation
     }

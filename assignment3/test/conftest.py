@@ -5,6 +5,7 @@ import pytest
 
 from instapy import io
 from instapy.python_filters import python_color2gray, python_color2sepia
+import numpy as np
 
 test_dir = Path(__file__).absolute().parent
 
@@ -18,14 +19,15 @@ def default_image():
 def random_image():
     # use seed to always generate the same image
     # useful for debugging
-    # np.random.seed(1)
+    np.random.seed(1)
     return io.random_image()
 
 
 @pytest.fixture
 def image():
     """Fixture to return an image to test with"""
-    return random_image().copy()
+    # return random_image().copy()
+    return default_image().copy()
 
 
 @pytest.fixture
@@ -35,7 +37,7 @@ def reference_gray():
 
     To compare with optimized implementations
     """
-    return python_color2gray(random_image())
+    return python_color2gray(default_image())
 
 
 @pytest.fixture
@@ -45,4 +47,15 @@ def reference_sepia():
 
     To compare with optimized implementations
     """
-    return python_color2sepia(random_image())
+    return python_color2sepia(default_image())
+
+
+@pytest.fixture
+def sepia_matrix():
+    return np.asarray(
+        [
+            [0.393, 0.769, 0.189],
+            [0.349, 0.686, 0.168],
+            [0.272, 0.534, 0.131],
+        ]
+    )

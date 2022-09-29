@@ -3,8 +3,6 @@
 from typing import Optional
 import numpy as np
 
-COLOR_WEIGHTS = np.asarray([0.21, 0.72, 0.07])
-
 
 def numpy_color2gray(image: np.array) -> np.array:
     """Convert rgb pixel array to grayscale
@@ -46,18 +44,24 @@ def numpy_color2sepia(image: np.array, k: Optional[float] = 1) -> np.array:
         # validate k (optional)
         raise ValueError(f"k must be between [0-1], got {k=}")
 
-    sepia_image = ...
+    sepia_image = np.empty_like(image, dtype=np.float32)
 
     # define sepia matrix (optional: with `k` tuning parameter for bonus task 13)
-    sepia_matrix = ...
+    sepia_matrix = (
+        np.asarray(
+            [
+                [0.393, 0.769, 0.189],
+                [0.349, 0.686, 0.168],
+                [0.272, 0.534, 0.131],
+            ],
+            dtype=np.float32,
+        )
+        * k
+    )
 
     # HINT: For version without adaptive sepia filter, use the same matrix as in the pure python implementation
     # use Einstein sum to apply pixel transform matrix
-    # Apply the matrix filter
-    sepia_image = ...
-
-    # Check which entries have a value greater than 255 and set it to 255 since we can not display values bigger than 255
-    ...
-
-    # Return image (make sure it's the right type!)
+    # Apply the matrix filter and clip the values to 255. Note that out=sepia_image ensures the type of sepia_image is
+    # presevered.
+    sepia_image = np.einsum("ijk,lk->ijl", image.astype(np.float16), sepia_matrix, dtype=np.float16, casting="unsafe")
     return sepia_image

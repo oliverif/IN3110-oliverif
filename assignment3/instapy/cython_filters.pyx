@@ -1,42 +1,78 @@
-
 import numpy as np
 cimport numpy as np
+import cython
 
 
-def cython_color2gray(image):
-    """Convert rgb pixel array to grayscale
+
+def cython_color2gray(unsigned char [:,:,:] image):
+    """Convert rgb pixel array to grayscale using cython implementation.
 
     Args:
-        image (np.array)
+        image (np.array) Input will be cast to cdef unsigned char memoryview
     Returns:
         np.array: gray_image
     """
-    #cdef np.ndarray[np.float_t,ndim=1] PIXEL_WEIGHTS = np.asarray([0.21, 0.72, 0.07])
 
-    #cdef np.ndarray[np.uint8_t,ndim=3] img = image
-    cdef np.ndarray[np.uint8_t,ndim=3] gray_image = np.empty_like(image)
-    #cdef np.ndarray[np.double_t,ndim=3] res = img * PIXEL_WEIGHTS
-    #gray_image[:, :,:] = np.sum(res, axis=2, keepdims=True)
 
-    #gray_image = np.empty_like(image)
-    # Return image (make sure it's the right type!)
+    # Get the image dimensions
+    cdef int nx = image.shape[1]
+    cdef int ny = image.shape[0]
+
+    # Create memoryview with unsigned char(uint8) as type. Memoryview is more efficient for retrieving items through
+    # indexing.
+    cdef unsigned char[:,:,:] gray_image = np.empty((ny,nx,3), dtype=np.uint8)
+
+    # Pre define variables to avoid interaction with python api
     cdef double r = 0.21
     cdef double g = 0.71
     cdef double b = 0.07
-    cdef int first = 0
-    cdef int second = 1
-    cdef int third = 2
-    gray_image[:, :, first] = gray_image[:, :, second] = gray_image[:, :, third] = (
-        image[:, :, first] * r + image[:, :, second] * g + image[:, :, third] * b
-    )
-    return gray_image
+    cdef int i,j
+    cdef unsigned char gray_val
 
-def cython_color2sepia(image):
-    """Convert rgb pixel array to sepia
+    # Iterate through image and assign gray value to memoryview
+    for i in range(ny):
+        for j in range(nx):
+            gray_val = <unsigned char>(image[i, j,0] * r + image[i, j,1] *g + image[i, j,2] * b) #Cast result to uint8
+            gray_image[i,j,0] = gray_image[i,j,1] = gray_image[i,j,2] = gray_val
+    
+    #convert memoryview to numpy array
+    return np.asarray(gray_image)
+
+cdef clip_to_255(double val):
+    cdef int clipval = 255
+    if val > clipval:
+        return clipval
+    else:
+        return val
+
+def cython_color2sepia(unsigned char[:,:,:] image):
+    """Convert rgb pixel array to sepia using cython implementation
 
     Args:
         image (np.array)
     Returns:
         np.array: gray_image
     """
-    ...
+
+    cdef int nx = image.shape[1]
+    cdef int ny = image.shape[0]
+
+    cdef double[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.double)
+
+    cdef double[:,:] sepia_matrix = np.asarray(
+        [
+            [0.393, 0.769, 0.189],
+            [0.349, 0.686, 0.168],
+            [0.272, 0.534, 0.131],
+        ]
+    )
+    cdef int i,j,n,m
+    cdef double tmp
+
+    for i in range(ny):
+        for j in range(nx):
+            for n in range(3):
+                sepia_image[i, j, n] = <unsigned char> min(image[i, j, 0] * sepia_matrix[n, 0] + image[i, j, 1] * sepia_matrix[n, 1] + image[i, j, 2] * sepia_matrix[n, 2],255)
+    
+    return np.asarray(sepia_image)
+
