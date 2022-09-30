@@ -24,7 +24,7 @@ def cython_color2gray(unsigned char [:,:,:] image):
 
     # Pre define variables to avoid interaction with python api
     cdef double r = 0.21
-    cdef double g = 0.71
+    cdef double g = 0.72
     cdef double b = 0.07
     cdef int i,j
     cdef unsigned char gray_val
@@ -38,13 +38,6 @@ def cython_color2gray(unsigned char [:,:,:] image):
     #convert memoryview to numpy array
     return np.asarray(gray_image)
 
-cdef clip_to_255(double val):
-    cdef int clipval = 255
-    if val > clipval:
-        return clipval
-    else:
-        return val
-
 def cython_color2sepia(unsigned char[:,:,:] image):
     """Convert rgb pixel array to sepia using cython implementation
 
@@ -57,7 +50,7 @@ def cython_color2sepia(unsigned char[:,:,:] image):
     cdef int nx = image.shape[1]
     cdef int ny = image.shape[0]
 
-    cdef double[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.double)
+    cdef unsigned char[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.uint8)
 
     cdef double[:,:] sepia_matrix = np.asarray(
         [

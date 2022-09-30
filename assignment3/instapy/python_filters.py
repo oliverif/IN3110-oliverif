@@ -2,7 +2,7 @@
 
 import numpy as np
 
-PIXEL_WEIGHTS = [0.21, 0.72, 0.07]
+PIXEL_WEIGHTS = np.asarray([0.2100, 0.7200, 0.0700])
 
 
 def python_color2gray(image: np.array) -> np.array:
@@ -32,7 +32,7 @@ def python_color2sepia(image: np.array) -> np.array:
     Returns:
         np.array: sepia_image
     """
-    sepia_image = np.empty_like(image, dtype="double")
+    sepia_image = np.empty_like(image, dtype=np.uint8)
     # Iterate through the pixels
     # applying the sepia matrix
     sepia_matrix = np.asarray(

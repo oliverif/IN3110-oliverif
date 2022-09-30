@@ -2419,14 +2419,7 @@ static CYTHON_INLINE PyObject *__pyx_memview_get_unsigned_char(const char *itemp
 static CYTHON_INLINE int __pyx_memview_set_unsigned_char(const char *itemp, PyObject *obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(PyObject *, int writable_flag);
-
-/* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_double(PyObject *, int writable_flag);
-
-/* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_double(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *obj);
 
 /* RealImag.proto */
 #if CYTHON_CCOMPLEX
@@ -2713,7 +2706,6 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
 static const char __pyx_k_uint8[] = "uint8";
-static const char __pyx_k_double[] = "double";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
@@ -2824,7 +2816,6 @@ static PyObject *__pyx_kp_s_contiguous_and_indirect;
 static PyObject *__pyx_n_s_cython_color2gray;
 static PyObject *__pyx_n_s_cython_color2sepia;
 static PyObject *__pyx_n_s_dict;
-static PyObject *__pyx_n_s_double;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_dtype_is_object;
 static PyObject *__pyx_n_s_empty;
@@ -3154,7 +3145,7 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_cython_color2gray(CYTHON_UNU
  * 
  *     # Pre define variables to avoid interaction with python api
  *     cdef double r = 0.21             # <<<<<<<<<<<<<<
- *     cdef double g = 0.71
+ *     cdef double g = 0.72
  *     cdef double b = 0.07
  */
   __Pyx_TraceLine(26,0,__PYX_ERR(0, 26, __pyx_L1_error))
@@ -3163,16 +3154,16 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_cython_color2gray(CYTHON_UNU
   /* "instapy/cython_filters.pyx":27
  *     # Pre define variables to avoid interaction with python api
  *     cdef double r = 0.21
- *     cdef double g = 0.71             # <<<<<<<<<<<<<<
+ *     cdef double g = 0.72             # <<<<<<<<<<<<<<
  *     cdef double b = 0.07
  *     cdef int i,j
  */
   __Pyx_TraceLine(27,0,__PYX_ERR(0, 27, __pyx_L1_error))
-  __pyx_v_g = 0.71;
+  __pyx_v_g = 0.72;
 
   /* "instapy/cython_filters.pyx":28
  *     cdef double r = 0.21
- *     cdef double g = 0.71
+ *     cdef double g = 0.72
  *     cdef double b = 0.07             # <<<<<<<<<<<<<<
  *     cdef int i,j
  *     cdef unsigned char gray_val
@@ -3253,7 +3244,7 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_cython_color2gray(CYTHON_UNU
  *     #convert memoryview to numpy array
  *     return np.asarray(gray_image)             # <<<<<<<<<<<<<<
  * 
- * cdef clip_to_255(double val):
+ * def cython_color2sepia(unsigned char[:,:,:] image):
  */
   __Pyx_TraceLine(39,0,__PYX_ERR(0, 39, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
@@ -3314,109 +3305,6 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_cython_color2gray(CYTHON_UNU
 /* "instapy/cython_filters.pyx":41
  *     return np.asarray(gray_image)
  * 
- * cdef clip_to_255(double val):             # <<<<<<<<<<<<<<
- *     cdef int clipval = 255
- *     if val > clipval:
- */
-
-static PyObject *__pyx_f_7instapy_14cython_filters_clip_to_255(double __pyx_v_val) {
-  int __pyx_v_clipval;
-  PyObject *__pyx_r = NULL;
-  __Pyx_TraceDeclarations
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("clip_to_255", 0);
-  __Pyx_TraceCall("clip_to_255", __pyx_f[0], 41, 0, __PYX_ERR(0, 41, __pyx_L1_error));
-
-  /* "instapy/cython_filters.pyx":42
- * 
- * cdef clip_to_255(double val):
- *     cdef int clipval = 255             # <<<<<<<<<<<<<<
- *     if val > clipval:
- *         return clipval
- */
-  __Pyx_TraceLine(42,0,__PYX_ERR(0, 42, __pyx_L1_error))
-  __pyx_v_clipval = 0xFF;
-
-  /* "instapy/cython_filters.pyx":43
- * cdef clip_to_255(double val):
- *     cdef int clipval = 255
- *     if val > clipval:             # <<<<<<<<<<<<<<
- *         return clipval
- *     else:
- */
-  __Pyx_TraceLine(43,0,__PYX_ERR(0, 43, __pyx_L1_error))
-  __pyx_t_1 = ((__pyx_v_val > __pyx_v_clipval) != 0);
-  if (__pyx_t_1) {
-
-    /* "instapy/cython_filters.pyx":44
- *     cdef int clipval = 255
- *     if val > clipval:
- *         return clipval             # <<<<<<<<<<<<<<
- *     else:
- *         return val
- */
-    __Pyx_TraceLine(44,0,__PYX_ERR(0, 44, __pyx_L1_error))
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_clipval); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_r = __pyx_t_2;
-    __pyx_t_2 = 0;
-    goto __pyx_L0;
-
-    /* "instapy/cython_filters.pyx":43
- * cdef clip_to_255(double val):
- *     cdef int clipval = 255
- *     if val > clipval:             # <<<<<<<<<<<<<<
- *         return clipval
- *     else:
- */
-  }
-
-  /* "instapy/cython_filters.pyx":46
- *         return clipval
- *     else:
- *         return val             # <<<<<<<<<<<<<<
- * 
- * def cython_color2sepia(unsigned char[:,:,:] image):
- */
-  __Pyx_TraceLine(46,0,__PYX_ERR(0, 46, __pyx_L1_error))
-  /*else*/ {
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_val); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_r = __pyx_t_2;
-    __pyx_t_2 = 0;
-    goto __pyx_L0;
-  }
-
-  /* "instapy/cython_filters.pyx":41
- *     return np.asarray(gray_image)
- * 
- * cdef clip_to_255(double val):             # <<<<<<<<<<<<<<
- *     cdef int clipval = 255
- *     if val > clipval:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("instapy.cython_filters.clip_to_255", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_TraceReturn(__pyx_r, 0);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "instapy/cython_filters.pyx":48
- *         return val
- * 
  * def cython_color2sepia(unsigned char[:,:,:] image):             # <<<<<<<<<<<<<<
  *     """Convert rgb pixel array to sepia using cython implementation
  * 
@@ -3435,7 +3323,7 @@ static PyObject *__pyx_pw_7instapy_14cython_filters_3cython_color2sepia(PyObject
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("cython_color2sepia (wrapper)", 0);
   assert(__pyx_arg_image); {
-    __pyx_v_image = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_unsigned_char(__pyx_arg_image, PyBUF_WRITABLE); if (unlikely(!__pyx_v_image.memview)) __PYX_ERR(0, 48, __pyx_L3_error)
+    __pyx_v_image = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_unsigned_char(__pyx_arg_image, PyBUF_WRITABLE); if (unlikely(!__pyx_v_image.memview)) __PYX_ERR(0, 41, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3499,46 +3387,46 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   int __pyx_clineno = 0;
   __Pyx_TraceFrameInit(__pyx_codeobj__2)
   __Pyx_RefNannySetupContext("cython_color2sepia", 0);
-  __Pyx_TraceCall("cython_color2sepia", __pyx_f[0], 48, 0, __PYX_ERR(0, 48, __pyx_L1_error));
+  __Pyx_TraceCall("cython_color2sepia", __pyx_f[0], 41, 0, __PYX_ERR(0, 41, __pyx_L1_error));
 
-  /* "instapy/cython_filters.pyx":57
+  /* "instapy/cython_filters.pyx":50
  *     """
  * 
  *     cdef int nx = image.shape[1]             # <<<<<<<<<<<<<<
  *     cdef int ny = image.shape[0]
  * 
  */
-  __Pyx_TraceLine(57,0,__PYX_ERR(0, 57, __pyx_L1_error))
+  __Pyx_TraceLine(50,0,__PYX_ERR(0, 50, __pyx_L1_error))
   __pyx_v_nx = (__pyx_v_image.shape[1]);
 
-  /* "instapy/cython_filters.pyx":58
+  /* "instapy/cython_filters.pyx":51
  * 
  *     cdef int nx = image.shape[1]
  *     cdef int ny = image.shape[0]             # <<<<<<<<<<<<<<
  * 
- *     cdef double[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.double)
+ *     cdef unsigned char[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.uint8)
  */
-  __Pyx_TraceLine(58,0,__PYX_ERR(0, 58, __pyx_L1_error))
+  __Pyx_TraceLine(51,0,__PYX_ERR(0, 51, __pyx_L1_error))
   __pyx_v_ny = (__pyx_v_image.shape[0]);
 
-  /* "instapy/cython_filters.pyx":60
+  /* "instapy/cython_filters.pyx":53
  *     cdef int ny = image.shape[0]
  * 
- *     cdef double[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.double)             # <<<<<<<<<<<<<<
+ *     cdef unsigned char[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.uint8)             # <<<<<<<<<<<<<<
  * 
  *     cdef double[:,:] sepia_matrix = np.asarray(
  */
-  __Pyx_TraceLine(60,0,__PYX_ERR(0, 60, __pyx_L1_error))
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_TraceLine(53,0,__PYX_ERR(0, 53, __pyx_L1_error))
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ny); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_ny); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_nx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_nx); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -3549,54 +3437,54 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_int_3);
   __pyx_t_1 = 0;
   __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_double); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_uint8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_unsigned_char(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_sepia_image = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "instapy/cython_filters.pyx":62
- *     cdef double[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.double)
+  /* "instapy/cython_filters.pyx":55
+ *     cdef unsigned char[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.uint8)
  * 
  *     cdef double[:,:] sepia_matrix = np.asarray(             # <<<<<<<<<<<<<<
  *         [
  *             [0.393, 0.769, 0.189],
  */
-  __Pyx_TraceLine(62,0,__PYX_ERR(0, 62, __pyx_L1_error))
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_TraceLine(55,0,__PYX_ERR(0, 55, __pyx_L1_error))
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "instapy/cython_filters.pyx":64
+  /* "instapy/cython_filters.pyx":57
  *     cdef double[:,:] sepia_matrix = np.asarray(
  *         [
  *             [0.393, 0.769, 0.189],             # <<<<<<<<<<<<<<
  *             [0.349, 0.686, 0.168],
  *             [0.272, 0.534, 0.131],
  */
-  __Pyx_TraceLine(64,0,__PYX_ERR(0, 64, __pyx_L1_error))
-  __pyx_t_4 = PyList_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_TraceLine(57,0,__PYX_ERR(0, 57, __pyx_L1_error))
+  __pyx_t_4 = PyList_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_float_0_393);
   __Pyx_GIVEREF(__pyx_float_0_393);
@@ -3608,15 +3496,15 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   __Pyx_GIVEREF(__pyx_float_0_189);
   PyList_SET_ITEM(__pyx_t_4, 2, __pyx_float_0_189);
 
-  /* "instapy/cython_filters.pyx":65
+  /* "instapy/cython_filters.pyx":58
  *         [
  *             [0.393, 0.769, 0.189],
  *             [0.349, 0.686, 0.168],             # <<<<<<<<<<<<<<
  *             [0.272, 0.534, 0.131],
  *         ]
  */
-  __Pyx_TraceLine(65,0,__PYX_ERR(0, 65, __pyx_L1_error))
-  __pyx_t_2 = PyList_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_TraceLine(58,0,__PYX_ERR(0, 58, __pyx_L1_error))
+  __pyx_t_2 = PyList_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_float_0_349);
   __Pyx_GIVEREF(__pyx_float_0_349);
@@ -3628,15 +3516,15 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   __Pyx_GIVEREF(__pyx_float_0_168);
   PyList_SET_ITEM(__pyx_t_2, 2, __pyx_float_0_168);
 
-  /* "instapy/cython_filters.pyx":66
+  /* "instapy/cython_filters.pyx":59
  *             [0.393, 0.769, 0.189],
  *             [0.349, 0.686, 0.168],
  *             [0.272, 0.534, 0.131],             # <<<<<<<<<<<<<<
  *         ]
  *     )
  */
-  __Pyx_TraceLine(66,0,__PYX_ERR(0, 66, __pyx_L1_error))
-  __pyx_t_1 = PyList_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_TraceLine(59,0,__PYX_ERR(0, 59, __pyx_L1_error))
+  __pyx_t_1 = PyList_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_float_0_272);
   __Pyx_GIVEREF(__pyx_float_0_272);
@@ -3648,15 +3536,15 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   __Pyx_GIVEREF(__pyx_float_0_131);
   PyList_SET_ITEM(__pyx_t_1, 2, __pyx_float_0_131);
 
-  /* "instapy/cython_filters.pyx":63
+  /* "instapy/cython_filters.pyx":56
  * 
  *     cdef double[:,:] sepia_matrix = np.asarray(
  *         [             # <<<<<<<<<<<<<<
  *             [0.393, 0.769, 0.189],
  *             [0.349, 0.686, 0.168],
  */
-  __Pyx_TraceLine(63,0,__PYX_ERR(0, 63, __pyx_L1_error))
-  __pyx_t_7 = PyList_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_TraceLine(56,0,__PYX_ERR(0, 56, __pyx_L1_error))
+  __pyx_t_7 = PyList_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_4);
   PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
@@ -3680,69 +3568,69 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   __pyx_t_5 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_7);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "instapy/cython_filters.pyx":62
- *     cdef double[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.double)
+  /* "instapy/cython_filters.pyx":55
+ *     cdef unsigned char[:,:,:] sepia_image = np.empty((ny,nx,3), dtype=np.uint8)
  * 
  *     cdef double[:,:] sepia_matrix = np.asarray(             # <<<<<<<<<<<<<<
  *         [
  *             [0.393, 0.769, 0.189],
  */
-  __Pyx_TraceLine(62,0,__PYX_ERR(0, 62, __pyx_L1_error))
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_TraceLine(55,0,__PYX_ERR(0, 55, __pyx_L1_error))
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_sepia_matrix = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "instapy/cython_filters.pyx":72
+  /* "instapy/cython_filters.pyx":65
  *     cdef double tmp
  * 
  *     for i in range(ny):             # <<<<<<<<<<<<<<
  *         for j in range(nx):
  *             for n in range(3):
  */
-  __Pyx_TraceLine(72,0,__PYX_ERR(0, 72, __pyx_L1_error))
+  __Pyx_TraceLine(65,0,__PYX_ERR(0, 65, __pyx_L1_error))
   __pyx_t_9 = __pyx_v_ny;
   __pyx_t_10 = __pyx_t_9;
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_i = __pyx_t_11;
 
-    /* "instapy/cython_filters.pyx":73
+    /* "instapy/cython_filters.pyx":66
  * 
  *     for i in range(ny):
  *         for j in range(nx):             # <<<<<<<<<<<<<<
  *             for n in range(3):
  *                 sepia_image[i, j, n] = <unsigned char> min(image[i, j, 0] * sepia_matrix[n, 0] + image[i, j, 1] * sepia_matrix[n, 1] + image[i, j, 2] * sepia_matrix[n, 2],255)
  */
-    __Pyx_TraceLine(73,0,__PYX_ERR(0, 73, __pyx_L1_error))
+    __Pyx_TraceLine(66,0,__PYX_ERR(0, 66, __pyx_L1_error))
     __pyx_t_12 = __pyx_v_nx;
     __pyx_t_13 = __pyx_t_12;
     for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
       __pyx_v_j = __pyx_t_14;
 
-      /* "instapy/cython_filters.pyx":74
+      /* "instapy/cython_filters.pyx":67
  *     for i in range(ny):
  *         for j in range(nx):
  *             for n in range(3):             # <<<<<<<<<<<<<<
  *                 sepia_image[i, j, n] = <unsigned char> min(image[i, j, 0] * sepia_matrix[n, 0] + image[i, j, 1] * sepia_matrix[n, 1] + image[i, j, 2] * sepia_matrix[n, 2],255)
  * 
  */
-      __Pyx_TraceLine(74,0,__PYX_ERR(0, 74, __pyx_L1_error))
+      __Pyx_TraceLine(67,0,__PYX_ERR(0, 67, __pyx_L1_error))
       for (__pyx_t_15 = 0; __pyx_t_15 < 3; __pyx_t_15+=1) {
         __pyx_v_n = __pyx_t_15;
 
-        /* "instapy/cython_filters.pyx":75
+        /* "instapy/cython_filters.pyx":68
  *         for j in range(nx):
  *             for n in range(3):
  *                 sepia_image[i, j, n] = <unsigned char> min(image[i, j, 0] * sepia_matrix[n, 0] + image[i, j, 1] * sepia_matrix[n, 1] + image[i, j, 2] * sepia_matrix[n, 2],255)             # <<<<<<<<<<<<<<
  * 
  *     return np.asarray(sepia_image)
  */
-        __Pyx_TraceLine(75,0,__PYX_ERR(0, 75, __pyx_L1_error))
+        __Pyx_TraceLine(68,0,__PYX_ERR(0, 68, __pyx_L1_error))
         __pyx_t_16 = 0xFF;
         __pyx_t_17 = __pyx_v_i;
         __pyx_t_18 = __pyx_v_j;
@@ -3768,25 +3656,25 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
         __pyx_t_31 = __pyx_v_i;
         __pyx_t_30 = __pyx_v_j;
         __pyx_t_29 = __pyx_v_n;
-        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_sepia_image.data + __pyx_t_31 * __pyx_v_sepia_image.strides[0]) ) + __pyx_t_30 * __pyx_v_sepia_image.strides[1]) ) + __pyx_t_29 * __pyx_v_sepia_image.strides[2]) )) = ((unsigned char)__pyx_t_33);
+        *((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_sepia_image.data + __pyx_t_31 * __pyx_v_sepia_image.strides[0]) ) + __pyx_t_30 * __pyx_v_sepia_image.strides[1]) ) + __pyx_t_29 * __pyx_v_sepia_image.strides[2]) )) = ((unsigned char)__pyx_t_33);
       }
     }
   }
 
-  /* "instapy/cython_filters.pyx":77
+  /* "instapy/cython_filters.pyx":70
  *                 sepia_image[i, j, n] = <unsigned char> min(image[i, j, 0] * sepia_matrix[n, 0] + image[i, j, 1] * sepia_matrix[n, 1] + image[i, j, 2] * sepia_matrix[n, 2],255)
  * 
  *     return np.asarray(sepia_image)             # <<<<<<<<<<<<<<
  * 
  */
-  __Pyx_TraceLine(77,0,__PYX_ERR(0, 77, __pyx_L1_error))
+  __Pyx_TraceLine(70,0,__PYX_ERR(0, 70, __pyx_L1_error))
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_sepia_image, 3, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_sepia_image, 3, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
@@ -3801,15 +3689,15 @@ static PyObject *__pyx_pf_7instapy_14cython_filters_2cython_color2sepia(CYTHON_U
   __pyx_t_5 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "instapy/cython_filters.pyx":48
- *         return val
+  /* "instapy/cython_filters.pyx":41
+ *     return np.asarray(gray_image)
  * 
  * def cython_color2sepia(unsigned char[:,:,:] image):             # <<<<<<<<<<<<<<
  *     """Convert rgb pixel array to sepia using cython implementation
@@ -19851,7 +19739,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cython_color2gray, __pyx_k_cython_color2gray, sizeof(__pyx_k_cython_color2gray), 0, 0, 1, 1},
   {&__pyx_n_s_cython_color2sepia, __pyx_k_cython_color2sepia, sizeof(__pyx_k_cython_color2sepia), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
-  {&__pyx_n_s_double, __pyx_k_double, sizeof(__pyx_k_double), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_dtype_is_object, __pyx_k_dtype_is_object, sizeof(__pyx_k_dtype_is_object), 0, 0, 1, 1},
   {&__pyx_n_s_empty, __pyx_k_empty, sizeof(__pyx_k_empty), 0, 0, 1, 1},
@@ -20179,17 +20066,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__25);
   __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_instapy_cython_filters_pyx, __pyx_n_s_cython_color2gray, 7, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 7, __pyx_L1_error)
 
-  /* "instapy/cython_filters.pyx":48
- *         return val
+  /* "instapy/cython_filters.pyx":41
+ *     return np.asarray(gray_image)
  * 
  * def cython_color2sepia(unsigned char[:,:,:] image):             # <<<<<<<<<<<<<<
  *     """Convert rgb pixel array to sepia using cython implementation
  * 
  */
-  __pyx_tuple__26 = PyTuple_Pack(11, __pyx_n_s_image, __pyx_n_s_image, __pyx_n_s_nx, __pyx_n_s_ny, __pyx_n_s_sepia_image, __pyx_n_s_sepia_matrix, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_tmp); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(11, __pyx_n_s_image, __pyx_n_s_image, __pyx_n_s_nx, __pyx_n_s_ny, __pyx_n_s_sepia_image, __pyx_n_s_sepia_matrix, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_tmp); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_instapy_cython_filters_pyx, __pyx_n_s_cython_color2sepia, 48, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_instapy_cython_filters_pyx, __pyx_n_s_cython_color2sepia, 41, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 41, __pyx_L1_error)
 
   /* "View.MemoryView":287
  *         return self.name
@@ -20693,24 +20580,14 @@ if (!__Pyx_RefNanny) {
   /* "instapy/cython_filters.pyx":41
  *     return np.asarray(gray_image)
  * 
- * cdef clip_to_255(double val):             # <<<<<<<<<<<<<<
- *     cdef int clipval = 255
- *     if val > clipval:
- */
-  __Pyx_TraceLine(41,0,__PYX_ERR(0, 41, __pyx_L1_error))
-
-
-  /* "instapy/cython_filters.pyx":48
- *         return val
- * 
  * def cython_color2sepia(unsigned char[:,:,:] image):             # <<<<<<<<<<<<<<
  *     """Convert rgb pixel array to sepia using cython implementation
  * 
  */
-  __Pyx_TraceLine(48,0,__PYX_ERR(0, 48, __pyx_L1_error))
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_7instapy_14cython_filters_3cython_color2sepia, 0, __pyx_n_s_cython_color2sepia, NULL, __pyx_n_s_instapy_cython_filters, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_TraceLine(41,0,__PYX_ERR(0, 41, __pyx_L1_error))
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_7instapy_14cython_filters_3cython_color2sepia, 0, __pyx_n_s_cython_color2sepia, NULL, __pyx_n_s_instapy_cython_filters, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_cython_color2sepia, __pyx_t_1) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_cython_color2sepia, __pyx_t_1) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "instapy/cython_filters.pyx":1
@@ -25375,29 +25252,6 @@ static CYTHON_INLINE int __pyx_memview_set_unsigned_char(const char *itemp, PyOb
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(PyObject *obj, int writable_flag) {
-    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
-    __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
-    int retcode;
-    if (obj == Py_None) {
-        result.memview = (struct __pyx_memoryview_obj *) Py_None;
-        return result;
-    }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                 PyBUF_RECORDS_RO | writable_flag, 3,
-                                                 &__Pyx_TypeInfo_double, stack,
-                                                 &result, obj);
-    if (unlikely(retcode == -1))
-        goto __pyx_fail;
-    return result;
-__pyx_fail:
-    result.memview = NULL;
-    result.data = NULL;
-    return result;
-}
-
-/* ObjectToMemviewSlice */
   static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_double(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
@@ -25418,18 +25272,6 @@ __pyx_fail:
     result.memview = NULL;
     result.data = NULL;
     return result;
-}
-
-/* MemviewDtypeToObject */
-  static CYTHON_INLINE PyObject *__pyx_memview_get_double(const char *itemp) {
-    return (PyObject *) PyFloat_FromDouble(*(double *) itemp);
-}
-static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *obj) {
-    double value = __pyx_PyFloat_AsDouble(obj);
-    if ((value == (double)-1) && PyErr_Occurred())
-        return 0;
-    *(double *) itemp = value;
-    return 1;
 }
 
 /* Declarations */

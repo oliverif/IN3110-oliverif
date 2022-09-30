@@ -17,4 +17,4 @@ readme = "README.md"
 dependencies = ["numpy", "numba", "pillow", "line-profiler","cython"]
 
 [project.scripts]
-# instapy = "..."
+instapy = "instapy.cli:main"

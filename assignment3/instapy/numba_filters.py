@@ -19,15 +19,15 @@ def numba_color2gray(image: np.array) -> np.array:
     nx = image.shape[1]
     ny = image.shape[0]
     r = 0.2100
-    g = 0.7100
+    g = 0.7200
     b = 0.0700
 
     # Iterate through image and assign gray value to numpy array
     for i in range(ny):
         for j in range(nx):
-            gray_val = np.uint8(image[i, j, 0] * r + image[i, j, 1] * g + image[i, j, 2] * b)  # Cast result to uint8
+            gray_val = image[i, j, 0] * r + image[i, j, 1] * g + image[i, j, 2] * b  # Cast result to uint8
             gray_image[i, j, 0] = gray_image[i, j, 1] = gray_image[i, j, 2] = gray_val  # Faster than gray_image[i,j,:]
-    return gray_image
+    return gray_image.astype(np.uint8)
 
 
 @jit(nopython=True, cache=True)

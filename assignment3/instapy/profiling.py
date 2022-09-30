@@ -9,7 +9,7 @@ import line_profiler
 import numpy
 
 import instapy
-from . import io
+from instapy import io
 
 
 def profile_with_cprofile(filter, image, ncalls=3):
@@ -25,11 +25,16 @@ def profile_with_cprofile(filter, image, ncalls=3):
     """
     profiler = cProfile.Profile()
     # run `filter(image)` in the profiler
-    ...
-    stats = pstats.Stats(profiler)
+    profiler.enable()
+    for i in range(ncalls):
+        res = profiler.runcall(filter, image)
+    profiler.disable()
+
+    stats = pstats.Stats(profiler).strip_dirs().sort_stats("cumulative")
+
     # print the top 10 results, sorted by cumulative time
     # (check sort_stats and print_stats docstrings)
-    ...
+    stats.print_stats(10)
 
 
 def profile_with_line_profiler(filter, image, ncalls=3):
@@ -48,9 +53,10 @@ def profile_with_line_profiler(filter, image, ncalls=3):
     # tell it to measure the function we are given
     profiler.add_function(filter)
     # Measure filter(image)
-    ...
+    for i in range(ncalls):
+        res = profiler.runcall(filter, image)
     # print statistics
-    ...
+    profiler.print_stats()
 
 
 def run_profiles(profiler: str = "cprofile"):
@@ -62,17 +68,17 @@ def run_profiles(profiler: str = "cprofile"):
     """
     # Select which profile function to use
     if profiler == "line_profiler":
-        profile_func = ...
+        profile_func = profile_with_line_profiler
     elif profiler.lower() == "cprofile":
-        profile_func = ...
+        profile_func = profile_with_cprofile
     else:
         raise ValueError(f"{profiler=} must be 'line_profiler' or 'cprofile'")
 
     # construct a random 640x480 image
-    image = ...
+    image = io.random_image(640, 480)
 
-    filter_names = ...
-    implementations = ...
+    filter_names = ["color2gray", "color2sepia"]
+    implementations = ["python", "numpy", "numba", "cython"]
     for filter_name in filter_names:
         for implementation in implementations:
             print(f"Profiling {implementation} {filter_name} with {profiler}:")

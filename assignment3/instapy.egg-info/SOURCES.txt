@@ -4,6 +4,7 @@ setup.py
 instapy/__init__.py
 instapy/__main__.py
 instapy/cli.py
+instapy/cython_filters.c
 instapy/io.py
 instapy/numba_filters.py
 instapy/numpy_filters.py
@@ -13,6 +14,7 @@ instapy/timing.py
 instapy.egg-info/PKG-INFO
 instapy.egg-info/SOURCES.txt
 instapy.egg-info/dependency_links.txt
+instapy.egg-info/entry_points.txt
 instapy.egg-info/requires.txt
 instapy.egg-info/top_level.txt
 test/test_cython.py

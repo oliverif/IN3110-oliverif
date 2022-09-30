@@ -5,6 +5,7 @@ import pytest
 
 from instapy import io
 from instapy.python_filters import python_color2gray, python_color2sepia
+from instapy.numpy_filters import numpy_color2gray, numpy_color2sepia
 import numpy as np
 
 test_dir = Path(__file__).absolute().parent

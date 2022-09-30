@@ -18,9 +18,9 @@ def numpy_color2gray(image: np.array) -> np.array:
     # Multiply color weights with image allows vectorized multiplication.
     # Summing along axis 2 and assingning directly to the axis 2 of gray image.
     gray_image[:, :, 0] = gray_image[:, :, 1] = gray_image[:, :, 2] = (
-        image[:, :, 0] * 0.21000 + image[:, :, 1] * 0.72000 + image[:, :, 2] * 0.07000
+        image[:, :, 0] * 0.21 + image[:, :, 1] * 0.72 + image[:, :, 2] * 0.07
     )
-    return gray_image.astype("uint8")
+    return gray_image.astype(np.uint8)
 
 
 def numpy_color2sepia(image: np.array, k: Optional[float] = 1) -> np.array:
@@ -44,24 +44,37 @@ def numpy_color2sepia(image: np.array, k: Optional[float] = 1) -> np.array:
         # validate k (optional)
         raise ValueError(f"k must be between [0-1], got {k=}")
 
-    sepia_image = np.empty_like(image, dtype=np.float32)
+    sepia_image = np.empty_like(image, dtype=np.uint8)
 
     # define sepia matrix (optional: with `k` tuning parameter for bonus task 13)
-    sepia_matrix = (
+    sepia_matrix = np.add(
+        np.asarray(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+            ]
+        )
+        * (1 - k),
         np.asarray(
             [
                 [0.393, 0.769, 0.189],
                 [0.349, 0.686, 0.168],
                 [0.272, 0.534, 0.131],
             ],
-            dtype=np.float32,
         )
-        * k
+        * k,
     )
 
     # HINT: For version without adaptive sepia filter, use the same matrix as in the pure python implementation
     # use Einstein sum to apply pixel transform matrix
     # Apply the matrix filter and clip the values to 255. Note that out=sepia_image ensures the type of sepia_image is
     # presevered.
-    sepia_image = np.einsum("ijk,lk->ijl", image.astype(np.float16), sepia_matrix, dtype=np.float16, casting="unsafe")
+    sepia_image = np.clip(
+        np.einsum("ijk,lk->ijl", image, sepia_matrix, optimize=True),
+        a_min=0,
+        a_max=255,
+        out=sepia_image,
+        casting="unsafe",
+    )
     return sepia_image
