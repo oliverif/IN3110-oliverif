@@ -51,14 +51,16 @@ def find_articles(html: str, output=None) -> set:
     returns:
         - (set) : a set with urls to all the articles found
     """
-    urls = find_urls(html)
-    pattern = ...
-    articles = ...
+    urls = "\n".join(find_urls(html))
+    pattern = re.compile("https://[a-z]*.*wikipedia.org(?:/wiki/[^:]*$|$)", flags=re.IGNORECASE | re.MULTILINE)
+    articles = set(pattern.findall(urls))
 
     # Write to file if wanted
     if output:
-        ...
-    ...
+        print(f"Writing to: {output}")
+        with open(output, "w") as f:
+            f.write("\n".join(articles))
+    return articles
 
 
 ## Regex example
