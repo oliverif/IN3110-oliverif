@@ -136,12 +136,12 @@ def test_find_articles(url, expected, not_expected):
 def test_find_articles_output(tmpdir):
     html = """
     <a href="#fragment-only">anchor link</a>
-    <a id="some-id" href="wiki/relative/path#fragment">relative link</a>
+    <a id="some-id" href="/wiki/relative/path#fragment">relative link</a>
     <a href="//other.host/same-protocol">same-protocol link</a>
     <a href="https://example.com">absolute URL</a>
-    <a href="/other_path">other relative path</a>
-    <a href="/wiki/path/File:img.jpg">other relative path</a>
-    <a href="/w/index.php?cc">other relative path</a>
+    <a href="/wiki/other_path">other relative path</a>
+    <a href="/wiki/path/File:img.jpg">File namespace</a>
+    <a href="/w/index.php?cc">index path</a>
     """
 
     dest = tmpdir.join("output.txt")
@@ -155,5 +155,6 @@ def test_find_articles_output(tmpdir):
 
     url_list = written_output.split("\n")
     assert set(url_list) == {
-        "https://en.wikipedia.org/relative/path",
+        "https://en.wikipedia.org/wiki/relative/path",
+        "https://en.wikipedia.org/wiki/other_path",
     }

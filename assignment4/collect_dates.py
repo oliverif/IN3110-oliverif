@@ -31,10 +31,24 @@ def get_date_patterns() -> Tuple[str, str, str]:
     """
 
     # Regex to capture days, months and years with numbers
+
+    jan = r"\b[jJ]an(?:uary)?\b"
+    feb = r"\b[fF]eb(?:ruary)?\b"
+    mar = r"\b[mM]ar(?:ch)?\b"
+    apr = r"\b[aA]pr(?:il)?\b"
+    may = r"\b[mM]ay\b"
+    jun = r"\b[jJ]un(?:e)?\b"
+    jul = r"\b[jJ]ul(?:y)?\b"
+    aug = r"\b[aA]aug(?:ust)?\b"
+    sep = r"\b[sS]ep(?:tember)?\b"
+    oct = r"\b[oO]ct(?:ober)?\b"
+    nov = r"\b[nN]ov(?:ember)?\b"
+    dec = r"\b[dD]ec(?:ember)?\b"
+
     # year should accept a 4-digit number between at least 1000-2029
-    year = r"(?P<year>...)"
+    year = r"(?P<year>[1-20-90-90-9])"
     # month should accept month names or month numbers
-    month = r"(?P<month>...)"
+    month = r"(?P<month>(?:{jan}|{feb}|{mar}|{apr}|{may}|{jun}|{jul}|{aug}|{sep}|{oct}|{nov}|{dec}))"
     # day should be a number, which may or may not be zero-padded
     day = r"(?P<day>...)"
 

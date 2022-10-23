@@ -1,0 +1,6 @@
+https://example.com
+https://en.wikipedia.org/w/index.php?cc
+https://en.wikipedia.org/wiki/path/File:img.jpg
+https://en.wikipedia.org/wiki/other_path
+https://other.host/same-protocol
+https://en.wikipedia.org/wiki/relative/path
