@@ -146,7 +146,6 @@ def test_find_articles_output(tmpdir):
 
     dest = tmpdir.join("output.txt")
     articles = find_articles(html, output=str(dest))
-    print(articles)
 
     assert dest.exists()  # assert output file was created
 

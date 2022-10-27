@@ -46,8 +46,40 @@ def test_find_dates(date_str, date):
         ),
     ],
 )
-def test_find_urls(url, expected):
+def test_find_urls(url, expected, tmpdir):
+    dest = tmpdir.join("output.txt")
     html = get_html(url)
-    dates = find_dates(html)
+    dates = find_dates(html, output=str(dest))
     for expected_date in expected:
         assert expected_date in dates
+
+
+def test_find_dates_output(tmpdir):
+    text = """
+    DMY: 2 January 2020
+    MDY: February 12, 1954
+    YMD: 2015 March 31
+    ISO: 2022-04-15
+    DMY: 22 June 2020
+    MDY: October 13, 2025
+    YMD: 2019 December 2
+    """
+
+    dest = tmpdir.join("output.txt")
+    articles = find_dates(text, output=str(dest))
+
+    assert dest.exists()  # assert output file was created
+
+    with dest.open() as f:
+        written_output = f.read()
+
+    dates_list = written_output.split("\n")
+    assert set(dates_list) == {
+        "2020/01/02",
+        "1954/02/12",
+        "2015/03/31",
+        "2022/04/15",
+        "2020/06/22",
+        "2025/10/13",
+        "2019/12/02",
+    }
