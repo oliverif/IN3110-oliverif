@@ -1,7 +1,7 @@
 import re
 from copy import copy
 from dataclasses import dataclass
-
+from operator import itemgetter
 import bs4
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -30,12 +30,12 @@ def time_plan(url: str) -> str:
         markdown (str) : string containing the markdown schedule
     """
     # Get the page
-    html = ...
+    html = get_html(url)
     # parse the HTML
-    soup = ...
+    soup = BeautifulSoup(html, "html.parser")
     # locate the table
-    calendar = ...
-    soup_table = ...
+    calendar = soup.find(id="Calendar")
+    soup_table = calendar.find_next("table", {"class": "wikitable"})
     # extract events into pandas data frame
     df = extract_events(soup_table)
 
@@ -67,7 +67,6 @@ def extract_events(table: bs4.element.Tag) -> pd.DataFrame:
     labels = [th.text.strip() for th in headings]
     # soup_table = table.find_next("table", {"class": "wikitable"})
     data = []
-
     # Extracts the data in table, keeping track of colspan and rowspan
     rows = table.find_all("tr")
     rows = rows[1:]
@@ -75,13 +74,12 @@ def extract_events(table: bs4.element.Tag) -> pd.DataFrame:
         cells = tr.find_all("td")
         row = []
         for cell in cells:
+            colspan = cell.get("colspan")
+            colspan = 1 if colspan is None else int(colspan)
+            rowspan = cell.get("rowspan")
+            rowspan = 1 if rowspan is None else int(rowspan)
 
-            colspan = cell.find_all(class_="colspan")
-            rowspan = cell.find_all(class_="rowspan")
-            # print(cell.text.strip())
-            print(cell["class"])
-            ...
-            text = ...
+            text = cell.text.strip()
             row.append(
                 TableEntry(
                     text=text,
@@ -94,13 +92,13 @@ def extract_events(table: bs4.element.Tag) -> pd.DataFrame:
     # where each item is a TableEntry with row/colspan properties
     # expand TableEntries into a dense table
     all_data = expand_row_col_span(data)
-
+    # print(all_data)
     # List of desired columns
-    wanted = ...
+    wanted = ["Date", "Venue", "Type"]
 
     # Filter data and create pandas dataframe
     filtered_data = filter_data(labels, all_data, wanted)
-    df = ...
+    df = pd.DataFrame(filtered_data, columns=wanted)
 
     return df
 
@@ -113,6 +111,7 @@ def render_schedule(data: pd.DataFrame) -> str:
     return:
         markdown (str): the rendered schedule as markdown
     """
+    data = data.copy()
 
     def expand_event_type(type_key):
         """Expand event type key (SL) to full name (Slalom)
@@ -121,7 +120,8 @@ def render_schedule(data: pd.DataFrame) -> str:
         """
         return event_types.get(type_key[:2], type_key)
 
-    ...
+    data["Type"] = data["Type"].apply(lambda x: expand_event_type(x) if x[:2] in event_types.keys() else x)
+    return data.dropna().to_markdown()
 
 
 def strip_text(text: str) -> str:
@@ -156,7 +156,8 @@ def filter_data(keys: list, data: list, wanted: list):
             This is the subset of data in `data`,
             after discarding the columns not in `wanted`.
     """
-    ...
+    indices = [keys.index(col) for col in wanted]
+    return [list(itemgetter(*indices)(b)) for b in data]
 
 
 def expand_row_col_span(data):
