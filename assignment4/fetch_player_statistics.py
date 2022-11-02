@@ -189,15 +189,15 @@ def get_players(team_url: str) -> list:
 
     players = []
     # Loop over every row and get the names from roster
-    rows = table.find_next("tbody")
-    print(rows)
+    rows = table.find_next("table").find_next("tbody").find_all("tr")[1:]
+
     for row in rows:
         # Get the columns
         cols = row.find_all("td")
         # find name links (a tags)
+        a = cols[2].find("a")
         # and add to players a dict with
-        # {'name':, 'url':}
-        ...
+        players.append({"name": a["title"], "url": "https://en.wikipedia.org" + a["href"]})
 
     # return list of players
 
