@@ -65,17 +65,21 @@ def extract_events(table: bs4.element.Tag) -> pd.DataFrame:
     # Gets the table headers and saves their labels in `keys`
     headings = table.find_all("th")
     labels = [th.text.strip() for th in headings]
+    # soup_table = table.find_next("table", {"class": "wikitable"})
     data = []
 
     # Extracts the data in table, keeping track of colspan and rowspan
-    rows = ...
+    rows = table.find_all("tr")
     rows = rows[1:]
     for tr in rows:
-        cells = ...
+        cells = tr.find_all("td")
         row = []
         for cell in cells:
-            colspan = ...
-            rowspan = ...
+
+            colspan = cell.find_all(class_="colspan")
+            rowspan = cell.find_all(class_="rowspan")
+            # print(cell.text.strip())
+            print(cell["class"])
             ...
             text = ...
             row.append(
@@ -221,9 +225,7 @@ def expand_row_col_span(data):
 if __name__ == "__main__":
     # test the script on the past few years by running it:
     for year in range(20, 23):
-        url = (
-            f"https://en.wikipedia.org/wiki/20{year}–{year+1}_FIS_Alpine_Ski_World_Cup"
-        )
+        url = f"https://en.wikipedia.org/wiki/20{year}–{year+1}_FIS_Alpine_Ski_World_Cup"
         print(url)
         md = time_plan(url)
         print(md)
