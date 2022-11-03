@@ -235,10 +235,10 @@ def get_players(team_url: str) -> list:
     soup = BeautifulSoup(html, "html.parser")
     table = soup.find(id="Roster").find_next("table")
 
+    # find the rows of the table. Index 0 is headings
+    rows = table.find_next("table").find_next("tbody").find_all("tr")[1:]
     players = []
     # Loop over every row and get the names from roster
-    rows = table.find_next("table").find_next("tbody").find_all("tr")[1:]
-
     for row in rows:
         # Get the columns
         cols = row.find_all("td")
@@ -271,13 +271,16 @@ def get_player_stats(player_url: str, team: str) -> dict:
 
     labels = stat_inds = [c.text.strip() for c in all_rows[0].find_all("th")]
 
+    # store index of team and year columns for later retreival
     team_col = labels.index("Team")
     year_col = labels.index("Year")
     stat_dict = {"RPG": "rebounds", "APG": "assists", "PPG": "points"}
+    # determine which indices holds the specified stats
     stat_inds = [labels.index(w) for w in stat_dict.keys()]
 
     rows = all_rows[1:]
 
+    # set to zero if stat is missing
     stats = {key: 0 for key in stat_dict.values()}
 
     # Loop over rows and extract the stats

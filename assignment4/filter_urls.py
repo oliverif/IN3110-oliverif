@@ -17,10 +17,10 @@ def find_urls(
     """
     # create and compile regular expression(s)
 
-    # 1. find all the anchor tags, then
-    # 2. find the urls href attributes
+    # 1. find all the anchor tags
     urls = set()
     anchor_tag = re.compile(r"<a[^>]+>", flags=re.IGNORECASE)
+    # 2. find the urls href attributes
     url_pat = re.compile(r'href="([^"^#]+)', flags=re.IGNORECASE)
 
     protocol = base_url.split("/")[0]
@@ -28,9 +28,9 @@ def find_urls(
         url = url_pat.search(a_tag)
         if url:
             url = url.group(1)
-            if url.startswith("//") and base_url:
+            if url.startswith("//") and base_url:  # those with same protocol
                 urls.add(protocol + url)
-            elif url.startswith("/") and base_url:
+            elif url.startswith("/") and base_url:  # those with same host
                 urls.add(base_url + url)
             else:
                 urls.add(url)

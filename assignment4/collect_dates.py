@@ -45,8 +45,6 @@ def get_date_patterns() -> Tuple[str, str, str]:
     nov = r"\b[nN]ov(?:ember)?\b"
     dec = r"\b[dD]ec(?:ember)?\b"
 
-    iso_month_format = r"\b(?:0\d|1[0-2])\b"
-
     # year should accept a 4-digit number between at least 1000-2029
     year = r"(?P<year>(?:1\d\d\d|20[0-2]\d))"
     # month should accept month names or month numbers
