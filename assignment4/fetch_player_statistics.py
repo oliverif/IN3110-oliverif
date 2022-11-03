@@ -1,6 +1,5 @@
 import os
 import re
-from operator import itemgetter
 from typing import Dict, List
 from urllib.parse import urljoin
 
@@ -38,14 +37,16 @@ def find_best_players(url: str) -> None:
     # assert len(teams) == 8
 
     # Gets the player for every team and stores in dict (get_players)
-    all_players = ...
+    all_players = {team["name"]: get_players(team["url"]) for team in teams}
 
     # get player statistics for each player,
     # using get_player_stats
     for team, players in all_players.items():
-        ...
+        for i in range(len(players)):
+            all_players[team][i] = all_players[team][i] | get_player_stats(all_players[team][i]["url"], team)
 
     # at this point, we should have a dict of the form:
+
     # {
     #     "team name": [
     #         {
@@ -61,13 +62,16 @@ def find_best_players(url: str) -> None:
 
     # Select top 3 for each team by points:
     best = {}
-    top_stat = ...
+    top_stat = "points"
     for team, players in all_players.items():
         # Sort and extract top 3 based on points
-        top_3 = ...
-        ...
+        sorted_players = sorted(players, key=lambda d: d[top_stat])
+        top_3 = sorted_players[-3]
+        top_2 = sorted_players[-2]
+        top_1 = sorted_players[-1]
+        best[team] = [top_1, top_2, top_3]
 
-    stats_to_plot = ...
+    stats_to_plot = ["points", "rebound", "assists"]
     for stat in stats_to_plot:
         plot_best(best, stat=stat)
 
@@ -197,7 +201,7 @@ def get_players(team_url: str) -> list:
         # find name links (a tags)
         a = cols[2].find("a")
         # and add to players a dict with
-        players.append({"name": a["title"], "url": "https://en.wikipedia.org" + a["href"]})
+        players.append({"name": a.text.strip(), "url": "https://en.wikipedia.org" + a["href"]})
 
     # return list of players
 
@@ -215,25 +219,33 @@ def get_player_stats(player_url: str, team: str) -> dict:
     print(f"Fetching stats for player in {player_url}")
 
     # Get the table with stats
-    html = ...
-    soup = ...
-    table = ...
+    html = get_html(player_url)
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.find(id="Regular_season")
+    table = table.find_next("table") if table is not None else soup.find(id="NBA").find_next("table")
+    all_rows = table.tbody.find_all("tr")
 
-    ...
-    stats = ...
+    labels = stat_inds = [c.text.strip() for c in all_rows[0].find_all("th")]
 
-    rows = ...
+    team_col = labels.index("Team")
+    year_col = labels.index("Year")
+    stat_dict = {"RPG": "rebounds", "APG": "assists", "PPG": "points"}
+    stat_inds = [labels.index(w) for w in stat_dict.keys()]
+
+    rows = all_rows[1:]
+
+    stats = {key: 0 for key in stat_dict.values()}
 
     # Loop over rows and extract the stats
     for row in rows:
-        cols = ...
-        ...
-        # Check correct team (some players change team within season)
-        ...
+        cols = row.find_all("td")
 
-        # load stats from columns
-        # keys should be 'points', 'assists', etc.
-        ...
+        # Check correct team (some players change team within season)
+        if cols[team_col].text.strip() == team and cols[year_col].text.strip().startswith("2021"):
+            # load stats from columns
+            # keys should be 'points', 'assists', etc.
+            for stat_ind, stat_name in zip(stat_inds, stat_dict.values()):
+                stats[stat_name] = float(cols[stat_ind].text.strip().rstrip("*"))
 
     return stats
 
