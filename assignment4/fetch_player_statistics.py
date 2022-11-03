@@ -1,4 +1,5 @@
 import os
+import pathlib
 import re
 from typing import Dict, List
 from urllib.parse import urljoin
@@ -71,7 +72,7 @@ def find_best_players(url: str) -> None:
         top_1 = sorted_players[-1]
         best[team] = [top_1, top_2, top_3]
 
-    stats_to_plot = ["points", "rebound", "assists"]
+    stats_to_plot = ["points", "assists", "rebounds"]
     for stat in stats_to_plot:
         plot_best(best, stat=stat)
 
@@ -102,7 +103,50 @@ def plot_best(best: Dict[str, List[Dict]], stat: str = "points") -> None:
             Should be a key in the player info dictionary.
     """
     stats_dir = "NBA_player_statistics"
-    ...
+    try:
+        os.mkdir(stats_dir)
+    except FileExistsError:
+        pass
+    count_so_far = 0
+    all_names = []
+
+    # iterate through each team and the
+    for team, players in best.items():
+        # pick the color for the team, from the table above
+        # color = color_table[team]
+        # collect the points and name of each player on the team
+        # you'll want to repeat with other stats as well
+        points = []
+        names = []
+        for player in players:
+            names.append(player["name"])
+            points.append(player[stat])
+        # record all the names, for use later in x label
+        all_names.extend(names)
+
+        # the position of bars is shifted by the number of players so far
+        x = range(count_so_far, count_so_far + len(players))
+        count_so_far += len(players)
+        # make bars for this team's players points,
+        # with the team name as the label
+        bars = plt.bar(x, points, label=team)
+        # add the value as text on the bars
+        plt.bar_label(bars)
+
+    # use the names, rotated 90 degrees as the labels for the bars
+    plt.xticks(range(len(all_names)), all_names, rotation=90)
+    # add the legend with the colors  for each team
+    plt.legend(loc=0)
+    # turn off gridlines
+    plt.grid(False)
+    # set the title
+    plt.title(f"{stat} per game")
+    # save the figure to a file
+    filename = pathlib.PosixPath(stats_dir + "/" + stat + ".png")
+    print(f"Creating {filename}")
+    plt.savefig(filename)
+    plt.clf()
+    return
 
 
 def get_teams(url: str) -> list:
