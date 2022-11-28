@@ -46,38 +46,39 @@ def find_best_players(url: str) -> None:
         for i in range(len(players)):
             all_players[team][i] = all_players[team][i] | get_player_stats(all_players[team][i]["url"], team)
 
-    # at this point, we should have a dict of the form:
-
-    # {
-    #     "team name": [
-    #         {
-    #             "name": "player name",
-    #             "url": "https://player_url",
-    #             # added by get_player_stats
-    #             "points": 5,
-    #             "assists": 1.2,
-    #             # ...,
-    #         },
-    #     ]
-    # }
-
     # Select top 3 for each team by points:
     best = {}
-    top_stat = "points"
+
     for team, players in all_players.items():
         # Sort and extract top 3 based on points
-        sorted_players = sorted(players, key=lambda d: d[top_stat])
-        top_3 = sorted_players[-3]
-        top_2 = sorted_players[-2]
-        top_1 = sorted_players[-1]
-        best[team] = [top_1, top_2, top_3]
+        all_p_points = []
+        for player in players:
+            p = {}
+            p["name"] = player["name"]
+            p["points"] = player["points"]
+            p["assists"] = player["assists"]
+            p["rebounds"] = player["rebounds"]
+            all_p_points.append(p)
 
+        #print(all_p_points)
+        top_3 = []
+        sort = sorted(all_p_points, key=lambda x: x["points"], reverse=True)
+        top_3 = [sort[0],sort[1],sort[2]]
+
+        best[team] = top_3
+    
+    
     stats_to_plot = ["points", "assists", "rebounds"]
     for stat in stats_to_plot:
-        plot_best(best, stat=stat)
+        plot_best(best, stat)
 
 
-def plot_best(best: Dict[str, List[Dict]], stat: str = "points") -> None:
+"""
+MADE CHANGES:
+- makes a plot categorized after best, second and third instead of each team
+- different appearance and size of the plot 
+"""
+def plot_best(best1: Dict[str, List[Dict]], stat: str = "points") -> None:
     """Plots a single stat for the top 3 players from every team.
 
     Arguments:
@@ -103,45 +104,63 @@ def plot_best(best: Dict[str, List[Dict]], stat: str = "points") -> None:
             Should be a key in the player info dictionary.
     """
     stats_dir = "NBA_player_statistics"
+    plt.figure(figsize=(20, 15))
+
     try:
         os.mkdir(stats_dir)
     except FileExistsError:
         pass
-    count_so_far = 0
-    all_names = []
 
-    # iterate through each team and the
-    for team, players in best.items():
-        # pick the color for the team, from the table above
-        # color = color_table[team]
-        # collect the points and name of each player on the team
-        # you'll want to repeat with other stats as well
-        points = []
-        names = []
-        for player in players:
-            names.append(player["name"])
-            points.append(player[stat])
-        # record all the names, for use later in x label
-        all_names.extend(names)
+    if stat == "points":
+        plt.ylim((0,37))
+    elif stat == "assists":
+        plt.ylim((0,12))
+    else: 
+        plt.ylim((0,14))
+    
+    w = 0.25
+    teams = []
+    best = []
+    second = []
+    third = []
 
-        # the position of bars is shifted by the number of players so far
-        x = range(count_so_far, count_so_far + len(players))
-        count_so_far += len(players)
-        # make bars for this team's players points,
-        # with the team name as the label
-        bars = plt.bar(x, points, label=team)
-        # add the value as text on the bars
-        plt.bar_label(bars)
+    best_name = []
+    second_name = []
+    third_name = []
 
-    # use the names, rotated 90 degrees as the labels for the bars
-    plt.xticks(range(len(all_names)), all_names, rotation=90)
-    # add the legend with the colors  for each team
-    plt.legend(loc=0)
-    # turn off gridlines
-    plt.grid(False)
-    # set the title
-    plt.title(f"{stat} per game")
-    # save the figure to a file
+    for team, players in best1.items():
+        teams.append(team)
+        best.append(players[0][stat])
+        second.append(players[1][stat])
+        third.append(players[2][stat])
+
+        #not used yet
+        best_name.append(players[0]["name"])
+        second_name.append(players[1]["name"])
+        third_name.append(players[2]["name"])
+
+    bar1 = np.arange(len(teams))
+    bar2 = [i+w for i in bar1]
+    bar3 = [i+w for i in bar2]
+
+    bars_best = plt.bar(bar1, best, w, label = "Best", color = "#F75D59")
+    bars_second = plt.bar(bar2, second, w, label = "Second", color = "#6698FF")
+    bars_third = plt.bar(bar3, third, w, label = "Third", color = "#FFAE42")
+    
+    #plots points for each of the three bars 
+    plt.bar_label(bars_best, labels = [f"{name}" for name in best_name], rotation=90)
+    plt.bar_label(bars_second, labels = [f"{name}" for name in second_name], rotation=90)
+    plt.bar_label(bars_third, labels = [f"{name}" for name in third_name], rotation=90)
+
+    plt.xlabel("Teams")
+    plt.ylabel(stat)
+    plt.title(f"{stat} for top 3 players in all teams")
+
+    #name of each team on x-axis
+    plt.xticks(bar1 + w, teams, rotation = 60, fontsize = 15)
+    plt.legend()
+
+    #saves to file
     filename = pathlib.PosixPath(stats_dir + "/" + stat + ".png")
     print(f"Creating {filename}")
     plt.savefig(filename)
