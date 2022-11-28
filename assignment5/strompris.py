@@ -25,8 +25,12 @@ requests_cache.install_cache()
 def fetch_day_prices(date: datetime.date = None, location: str = "NO1") -> pd.DataFrame:
     """Fetch one day of data for one location from hvakosterstrommen.no API
 
-    Make sure to document arguments and return value...
-    ...
+    Args:
+        date (datetime.date, optional): The date to evaluate prices. Defaults to None.
+        location (str, optional): The location code to evaluate prices. Defaults to "NO1".
+
+    Returns:
+        pd.DataFrame: Dataframe containing prices in NOK for every hour of date.
     """
     if date is None:
         date = datetime.date.today()
@@ -41,7 +45,13 @@ def fetch_day_prices(date: datetime.date = None, location: str = "NO1") -> pd.Da
 
 
 # LOCATION_CODES maps codes ("NO1") to names ("Oslo")
-LOCATION_CODES = {"NO1": "Oslo / Øst-Norge"}
+LOCATION_CODES = {
+    "NO1": "Oslo",
+    "NO2": "Kristiansand",
+    "NO3": "Trondheim",
+    "NO4": "Tromsø",
+    "NO5": "Bergen",
+}
 
 # task 1:
 
@@ -57,9 +67,18 @@ def fetch_prices(
     ...
     """
     if end_date is None:
-        end_date = ...
+        end_date = datetime.date.today()
 
-    ...
+    res = pd.DataFrame()
+    for i in reversed(range(days)):
+        date = end_date - datetime.timedelta(days=i)
+        for loc in locations:
+            df = fetch_day_prices(date, loc)
+            df["location_code"] = loc
+            df["location"] = LOCATION_CODES[loc]
+            res = pd.concat([res, df])
+
+    return res
 
 
 # task 5.1:
