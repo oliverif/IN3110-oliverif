@@ -4,6 +4,7 @@ from typing import List, Optional
 import altair as alt
 from fastapi import FastAPI, Query, Request
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from starlette.staticfiles import StaticFiles
 from strompris import (
     ACTIVITIES,
@@ -16,7 +17,7 @@ from strompris import (
 )
 
 app = FastAPI()
-templates = ...
+templates = Jinja2Templates(directory="templates")
 
 
 # `GET /` should render the `strompris.html` template
@@ -25,7 +26,9 @@ templates = ...
 # - location_codes: location code dict
 # - today: current date
 
-...
+@app.get("/", response_class=HTMLResponse)
+def strompris(request: Request, location = tuple(LOCATION_CODES.keys()),):
+    
 
 
 # GET /plot_prices.json should take inputs:

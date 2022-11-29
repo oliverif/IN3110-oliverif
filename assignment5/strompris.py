@@ -12,6 +12,7 @@ import altair as alt
 import pandas as pd
 import requests
 import requests_cache
+from typing import Tuple
 
 # install an HTTP request cache
 # to avoid unnecessary repeat requests for the same data
@@ -59,12 +60,20 @@ LOCATION_CODES = {
 def fetch_prices(
     end_date: datetime.date = None,
     days: int = 7,
-    locations=tuple(LOCATION_CODES.keys()),
+    locations: Tuple = tuple(LOCATION_CODES.keys()),
 ) -> pd.DataFrame:
-    """Fetch prices for multiple days and locations into a single DataFrame
+    """Fetch prices for multiple days and locations into a single DataFrame.
 
-    Make sure to document arguments and return value...
-    ...
+    This function fetches prices for multiple days and multiple locations. It uses fetch_day_prices function to fetch
+    prices for every day specified. It also adds two extra columns to indicate location associated with data point.
+
+    Args:
+        end_date (datetime.date, optional): The last day to evaluate price. Defaults to None.
+        days (int, optional): Amount of days up to last day, to evaluate price. Defaults to 7.
+        locations (Tuple, optional): The locations to evaluate price for. Defaults to tuple(LOCATION_CODES.keys()).
+
+    Returns:
+        pd.DataFrame: Dataframe containing prices for all locations every hour for all days specified
     """
     if end_date is None:
         end_date = datetime.date.today()
@@ -87,13 +96,22 @@ def fetch_prices(
 def plot_prices(df: pd.DataFrame) -> alt.Chart:
     """Plot energy prices over time
 
-    x-axis should be time_start
-    y-axis should be price in NOK
-    each location should get its own line
+    x-axis is time_start and y-axis is price in NOK. Each location is represented with its own line. The returned
+    Altair chart object can either be stored or shown.
+
+    Args:
+        df (pd.DataFrame): Dataframe containing electricity prices. This dataframe must also contain the column
+            "location" which contains the power location of the datapoint. I.e. the dataframe returned by fetch_prices
+            and not fetch_day_prices.
+
+    Returns:
+        alt.Chart: Altair chart object
+    """
+    """
 
     Make sure to document arguments and return value...
     """
-    ...
+    return alt.Chart(df).mark_line().encode(x="time_start", y="NOK_per_kWh", color="location")
 
 
 # Task 5.4
