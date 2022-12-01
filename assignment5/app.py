@@ -31,6 +31,14 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 def base(request: Request):
+    """Base function for when accessing the base url.
+
+    This function calls the strompris.html template with the specified inputs
+
+    Args:
+        request (Request): Required request input argument
+
+    """
     return templates.TemplateResponse(
         "strompris.html",
         {"request": request, "locations": list(LOCATION_CODES.keys()), "end": str(datetime.date.today())},
@@ -49,6 +57,19 @@ def base(request: Request):
 def plot_price_json(
     locations: Optional[List[str]] = Query(default=list(LOCATION_CODES.keys())), end=None, days: int = 7
 ):
+    """Plots the electricity prices
+
+    This function calls the developed price plotting functions thereby displaying it to the /plot_prices.json url.
+
+    Args:
+        locations (Optional[List[str]], optional): List of locations. Defaults to Query(default=list(LOCATION_CODES.keys())).
+        end (optional): End date or price evaluation. Defaults to None.
+        days (int, optional): Number of days back in time from end to evaluate prices. Defaults to 7.
+
+    Returns:
+        dict: The altair json chart
+    """
+    # Sets default end date
     if not end:
         end = datetime.date.today()
     else:
