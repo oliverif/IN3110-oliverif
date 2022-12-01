@@ -1,5 +1,7 @@
 import datetime
-from typing import List, Optional
+from typing import List, Optional, Union
+
+import pathlib
 
 import altair as alt
 from fastapi import FastAPI, Query, Request
@@ -26,9 +28,13 @@ templates = Jinja2Templates(directory="templates")
 # - location_codes: location code dict
 # - today: current date
 
+
 @app.get("/", response_class=HTMLResponse)
-def strompris(request: Request, location = tuple(LOCATION_CODES.keys()),):
-    
+def base(request: Request):
+    return templates.TemplateResponse(
+        "strompris.html",
+        {"request": request, "locations": list(LOCATION_CODES.keys()), "end": str(datetime.date.today())},
+    )
 
 
 # GET /plot_prices.json should take inputs:
@@ -39,8 +45,17 @@ def strompris(request: Request, location = tuple(LOCATION_CODES.keys()),):
 # return should be a vega-lite JSON chart (alt.Chart.to_dict())
 # produced by `plot_prices`
 # (task 5.6: return chart stacked with plot_daily_prices)
+@app.get("/plot_prices.json")
+def plot_price_json(
+    locations: Optional[List[str]] = Query(default=list(LOCATION_CODES.keys())), end=None, days: int = 7
+):
+    if not end:
+        end = datetime.date.today()
+    else:
+        end = datetime.datetime.strptime(end, "%Y-%m-%d").date()
 
-...
+    return plot_prices(fetch_prices(end, days, locations)).to_dict()
+
 
 # Task 5.6:
 # `GET /activity` should render the `activity.html` template
@@ -70,5 +85,6 @@ def strompris(request: Request, location = tuple(LOCATION_CODES.keys()),):
 
 if __name__ == "__main__":
     # use uvicorn to launch your application on port 5000
+    import uvicorn
 
-    ...
+    uvicorn.run(app, host="127.0.0.1", port=5000)

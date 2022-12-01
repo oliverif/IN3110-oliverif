@@ -111,6 +111,7 @@ def plot_prices(df: pd.DataFrame) -> alt.Chart:
 
     Make sure to document arguments and return value...
     """
+    print(type(alt.Chart(df).mark_line().encode(x="time_start", y="NOK_per_kWh", color="location")))
     return alt.Chart(df).mark_line().encode(x="time_start", y="NOK_per_kWh", color="location")
 
 

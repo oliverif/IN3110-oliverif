@@ -49,14 +49,28 @@
     ></script>
   </head>
   <body>
-    <!-- Add Navigation Bar to Docs.
-    -->
-
+    <div id="info">
+      <div id="header" style="font-size: 125%">
+        Strømpris
+      </div>
+      <div id="dataset" style="font-size: 75%">
+        This data is loaded from 
+        <a href="https://www.hvakosterstrommen.no" title="Hvakosterstrommen">https://www.hvakosterstrommen.no</a>
+      </div>
+    </div>
     <div id="vis"></div>
-    <!-- Create Form -->
     <form action="javascript:refreshPlot()" id="price-form">
-      <!--
-      -->
+      {% for location in locations %}
+      <input type="checkbox" name="locations" value="{{ location }}" />
+      <label for="{{ location }}">{{ location }}</label>
+      <br />
+      {% endfor %}
+
+    End date: <input type="date" id="end" name="end" min="2022-10-02"/> 
+    Days: <input type="number" id="days" name="days" value=7 min=1 max=20 />
+    <input type="submit" id="refresh" name="refresh" value="Refresh"/>
+    <br>
+
     </form>
 
     <script type="text/javascript">
@@ -67,7 +81,7 @@
         );
 
         // get inputs from the form
-
+        
         // get selected location checkboxes
         for (checkbox of document
           .getElementById("price-form")

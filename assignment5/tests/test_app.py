@@ -51,9 +51,7 @@ def test_form_input(client):
 
     location_values = []
     for location_input in locations_inputs:
-        assert (
-            location_input["type"] == "checkbox"
-        ), "locations inputs should have type=checkbox"
+        assert location_input["type"] == "checkbox", "locations inputs should have type=checkbox"
         location_values.append(location_input.attrs.get("value"))
 
     assert sorted(location_values) == sorted(location_codes)
@@ -95,9 +93,7 @@ def test_plot_prices_json(client, locations, end, days):
     assert content_type == "application/json"
     chart_data = response.json()
     # load datasets
-    dataframes = [
-        pd.DataFrame.from_dict(data) for data in chart_data["datasets"].values()
-    ]
+    dataframes = [pd.DataFrame.from_dict(data) for data in chart_data["datasets"].values()]
     for df in dataframes:
         assert "time_start" in df.columns
         assert "location" in df.columns
